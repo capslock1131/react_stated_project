@@ -1,0 +1,57 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="Calculate">RestService cal sum/min</doc>
+   <grammars>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://TargetNamespace.com/Calculate_sum_op_response" schemaLocation="xsd_resspone_sum_op.xsd"/>
+        </xsd:schema>
+      <schema targetNamespace="http://xmlns.oracle.com/ServiceBusApplication/SBProject/Calculate" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+            <element name="sum_op_params">
+                <complexType>
+                    <sequence>
+                        <element name="value1" type="string"/>
+                        <element name="value2" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://TargetNamespace.com/Calculate_pasc0008_response" schemaLocation="pasc008Resp.xsd"/>
+        </xsd:schema>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.oracle.com/ServiceBusApplication/SBProject/Calculate" elementFormDefault="qualified">
+            <element name="pasc0008_params">
+                <complexType>
+                    <sequence>
+                        <element name="optName" type="string"/>
+                        <element name="senderId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+   </grammars>
+   <resources>
+      <resource path="/sum">
+         <method name="GET" soa:wsdlOperation="sum_op">
+            <request soa:paramElement="pns:sum_op_params" xmlns:pns="http://xmlns.oracle.com/ServiceBusApplication/SBProject/Calculate">
+               <param name="value1" style="query" soa:expression="$msg.request/pns:value1" type="xsd:string" default=""/>
+               <param name="value2" style="query" soa:expression="$msg.request/pns:value2" type="xsd:string" default=""/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:Root-Element" xmlns:cns="http://TargetNamespace.com/Calculate_sum_op_response"/>
+            </response>
+         </method>
+      </resource>
+      <resource path="/testOperation1/{optName}/{senderId}">
+         <method name="PUT" soa:wsdlOperation="pasc0008">
+            <doc title="PUT pasc0008">dess</doc>
+            <request soa:paramElement="pns:pasc0008_params" xmlns:pns="http://xmlns.oracle.com/ServiceBusApplication/SBProject/Calculate">
+               <param name="optName" style="template" soa:expression="$msg.request/pns:optName" type="xsd:string"/>
+               <param name="senderId" style="template" soa:expression="$msg.request/pns:senderId" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:Root-Element" xmlns:cns="http://TargetNamespace.com/Calculate_pasc0008_response"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>
